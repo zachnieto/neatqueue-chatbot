@@ -1,0 +1,73 @@
+NeatQueue is a Discord bot that servers can invite via the invite link, or by clicking NeatQueue's profile in discord and clicking invite.
+
+ELO/PUG queueing bot that allows players to queue up for a specific game, interactively creates teams, and keeps track of player stats/mmr.
+
+Want to host games of 5v5, 3v3, 2v2v2v2, 10v10v10? Look no further than NeatQueue!
+
+NeatQueue is a team-vs-team/PUGs/matchmaking/6Mans bot, perfect for RocketLeague, Overwatch, Valorant, CSGO, R6, any gaming community that wants 24/7 running PUGS to hop into!
+
+SETUP: Type /setup or /startqueue in the desired channel
+
+View all commands with /help
+
+This bot allows for players to queue up for custom games, and orchestrates the creation of teams automatically using
+discord buttons! The bot can also run multiple queues simultaneously, and keep track of player MMR/ELO and stats.
+
+NeatQueue is the easiest bot to use, only requiring users to click buttons instead of typing commands to play!
+
+Features:
+
+
+24/7 Uptime!
+
+All player interaction is via buttons! No need to type!
+
+Easy to reach support!
+
+Loads of customization!
+
+Built-in stats system (MMR, Rank, Wins/Losses, Previous Games and More!)
+
+Global leaderboards to share stats between servers!
+
+Predictions and match betting!
+
+Ability to change the results of previous games!
+
+AntiCheat and boosting detection!
+
+Multiple team selection modes! (Captains, Random, Balanced, Unfair)
+
+Multiple captain selection modes! (Two Highest Ranked, Two Lowest Ranked, Random)
+
+Customize/Add your own voting menus!
+
+Allow players to choose maps and gamemodes!
+
+Specify lobby details to automatically generate!
+
+Substitute players during a match!
+
+Show rating in Discord nicknames!
+
+Queue directly into teams, or allow for interactive team creation!
+
+Utilize roles for your game!
+
+Require certain ratings or Discord roles to join!
+
+Automatic team and channel creation!
+
+Rematches!
+
+Assign/Remove roles depending on rating!
+
+Automatically move players to channels!
+
+Create teams/clans and queue up together for team vs team battles!
+
+Automatically clean up forgotten matches and channels!
+
+IF YOU HAVE ANY ISSUES, JOIN THE SUPPORT SERVER OR REACH OUT TO NeatZ#5525
+
+Need some extra customization for YOUR server? Just join the support server and request a feature!
