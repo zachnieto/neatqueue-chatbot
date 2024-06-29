@@ -16,6 +16,7 @@ from disnake.ext import commands
 from disnake.ext.commands import Bot
 from disnake.ui import Button
 from dotenv import load_dotenv
+from llama_index.core.prompts import PromptType
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ from llama_index.core import (
     VectorStoreIndex,
     SimpleDirectoryReader,
     StorageContext,
-    load_index_from_storage,
+    load_index_from_storage, PromptTemplate,
 )
 
 intents = Intents.default()
@@ -46,7 +47,29 @@ else:
     index = load_index_from_storage(storage_context)
 
 print("Loaded index")
-query_engine = index.as_query_engine()
+
+prompt_template_str = (
+    "Context information from multiple sources is below.\n"
+    "---------------------\n"
+    "{context_str}\n"
+    "---------------------\n"
+    "You are a tech support specialist for a Discord bot."
+    "Given the information from multiple sources and not prior knowledge, "
+    "answer the query. Be professional and as helpful as possible. "
+    "If you suggest using a command, format the command like `/command`. "
+    "If the answer is not found in the given sources, then say you do not have that information, and suggest "
+    "asking the same question in the <#868549627652214794> channel. Only answer questions if you know the answer.\n"
+    "Query: {query_str}\n"
+    "Answer: "
+)
+prompt_template = PromptTemplate(
+    prompt_template_str, prompt_type=PromptType.SUMMARY
+)
+
+query_engine = index.as_query_engine(
+    text_qa_template=prompt_template
+)
+
 
 
 @client.event
