@@ -339,3 +339,117 @@ Usage Permissions: Staff Role or Manage Channels Permission
 Arguments:
 - seconds: (Required) Cooldown duration in seconds.
 - Usage Permissions: Staff Role or Manage Channels Permission
+
+## Game Integrations
+Specify whether players must register their account before playing. Usage: /requireregister [mode]
+Arguments:
+- mode: (Required) Game to register with, or None to disable. Options: None, Valorant, Rainbow 6, Overwatch, RocketLeague, Custom API, Manually
+
+With register mode being Custom API, please check out https://docs.neatqueue.com/#/?id=webhooks With register mode Manually, players must have their MMR manually set, either through an admin command or via an API request https://docs.neatqueue.com/#/?id=endpoints.
+
+Usage Permissions: Staff Role or Manage Channels Permission
+
+## Gamemodes
+Sets whether players can reshuffle gamemodes in random gamemode selection. Usage: /gamemode reshuffle [toggle] (reshuffle_limit)
+Arguments:
+- toggle: (Required) Whether reshuffling is enabled or disabled. Options: Enabled, Disabled
+- reshuffle_limit: (Optional) How many times players can reshuffle gamemodes.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /gamemode selection
+Choose how gamemodes are selected. Usage: /gamemode selection [gamemode_choice]
+Arguments:
+- gamemode_choice: (Required) Voting, always random, ordered, or least common. Options: Vote, Random, Least Frequent, Ordered
+Usage Permissions: Staff Role or Manage Channels Permission
+
+## Heroes
+Adds the given hero. Usage: /hero add [hero_name]
+Arguments:
+- hero_name: (Required) New hero name.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /hero bans
+Specify the number of hero bans or 0 to disable. Usage: /hero bans [bans] (per_team)
+Arguments:
+- bans: (Required) Number of bans (per team if applicable).
+- per_team: (Optional) If the hero bans are team by team.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /hero remove
+Removes the given hero. Usage: /hero remove [hero_name]
+Arguments:
+- hero_name: (Required) The hero to remove, or ALL to remove all.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /hero voting
+Specify who can vote for hero bans. Defaults to All if no captains. Usage: /hero voting [per_team] [mode]
+Arguments:
+- per_team: (Required) If the map vote goes team by team. Team 1 picks first ban, Team 2 picks next, ...
+- mode: (Required) Who can vote. Options: All, Captains
+Usage Permissions: Staff Role or Manage Channels Permission
+
+## Info
+View information about the queue configuration. Usage: /info
+Usage Permissions: Staff Role or Manage Channels Permission
+
+## Language
+Set the language for the server. Usage: /language set [language]
+Arguments:
+- language: (Required) Server language. Options: English, Spanish, French, Portuguese, Japanese, Russian, German, Italian, Ukrainian, Polish, Hebrew, Arabic, Bengali, Hindi, Turkish, Vietnamese, Chinese Traditional, Uwu, Owo
+- If there is an issue with a normal language translation, please fix here: https://crowdin.com/project/neatqueue
+
+Usage Permissions: Staff Role or Manage Channels Permission
+
+## Leaderboard Config
+
+Leaderboard titles are hyperlinks to the website version of the leaderboard.
+
+### /leaderboardconfig edits
+Specify who can edit a leaderboard. Usage: /leaderboardconfig edits [edits]
+Arguments:
+- edits: (Required) Who can edit the leaderboard buttons. Options: Staff, Anyone, Creator
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig ignoreroles add
+Will not show players on leaderboard with this role. Usage: /leaderboardconfig ignoreroles add [role]
+Arguments:
+- role: (Required) Required role to show on leaderboard.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig ignoreroles remove
+Remove an ignored leaderboard role. Usage: /leaderboardconfig ignoreroles remove [role]
+Arguments:
+- role: (Required) Role to no longer ignore.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig monthly
+Toggle monthly leaderboards, either resets monthly or rolls over. Usage: /leaderboardconfig monthly [toggle] (mode)
+Arguments:
+- toggle: (Required) If monthly leaderboards are enabled. Options: Enabled, Disabled
+- mode: (Optional) If stats reset for the month, or keep rolling. Options: Reset, Rolling
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig requiredgames
+(Default: 1) The required number of games played to be displayed on the leaderboard. Usage: /leaderboardconfig requiredgames [games]
+Arguments:
+-games: (Required) Required number of games.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig sharedstats serverwide
+Toggle having player stats be shared among all queues. Usage: /leaderboardconfig sharedstats serverwide [toggle] (name)
+Arguments:
+- toggle: (Required) If player stats are server wide. Options: Enabled, Disabled
+- name: (Optional) Shared stats name, or omit to automatically determine.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig sharedstats set
+Sets the name to use for stats storaged. Queues with the same name share stats. Usage: /leaderboardconfig sharedstats set [name]
+Arguments:
+- name: (Required) Shared stats configuration name.
+Usage Permissions: Staff Role or Manage Channels Permission
+
+### /leaderboardconfig type
+Toggle using the image or text leaderboard. Usage: /leaderboardconfig type [type]
+Arguments:
+- type: (Required) Leaderboard format. Options: Images, Text
+Usage Permissions: Staff Role or Manage Channels Permission
