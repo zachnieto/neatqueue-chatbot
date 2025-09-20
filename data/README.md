@@ -81,10 +81,12 @@ Starting a queue is super simple with NeatQueue, just run one of the following c
 ## Messages + Styling
 ### `/message color`
 #### Description
- Sets the color for all embeds in messages.
-#### Usage: `/message color [color]`
+ Sets the color for all embeds and/or buttons in messages.
+#### Usage: `/message color (color) (button_color)`
 #### Arguments:
-`color`: *(Required)* Either a color by name, or by HEX value (Ex: 00FF55).
+`color`: *(Optional)* Either a color by name, or by HEX value (Ex: 00FF55).\
+`button_color`: *(Optional)* Button color name.\
+&emsp;&emsp;&emsp; Options: `Blurple, Gray, Green, Red, Random`
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -95,7 +97,7 @@ Starting a queue is super simple with NeatQueue, just run one of the following c
 #### Usage: `/message queuemessage footer (text) (icon_url)`
 #### Arguments:
 `text`: *(Optional)* Footer contents, or omit to remove.\
-`icon_url`: *(Optional)* -.
+`icon_url`: *(Optional)* 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -139,15 +141,6 @@ Compare your stats to the given player.
 `player2`: *(Required)* Enter the second user you want to compare to.\
 `player1`: *(Optional)* Enter the first user you want to compare to, or omit for yourself.\
 `hidden`: *(Optional)* If you want the stats to be hidden.
-
-<hr style="border:3px solid gray">
-
-## Donate
-### `/donate`
-#### Description
-Donate to help NeatQueue development.
-#### Usage: `/donate`
-
 
 <hr style="border:3px solid gray">
 
@@ -209,6 +202,15 @@ CAPTAIN ONLY: Designate a new captain if you are the current one.
 #### Arguments:
 `player`: *(Required)* The new captain.\
 `party_name`: *(Required)* The team name.
+
+---
+
+### `/party clear`
+#### Description
+CAPTAIN ONLY: Remove all members from the party except the captain.
+#### Usage: `/party clear [party_name]`
+#### Arguments:
+`party_name`: *(Required)* The party name.
 
 ---
 
@@ -468,10 +470,11 @@ Substitute yourself for the given player.
 ### `/autoping set`
 #### Description
  Automatically ping the given role when the queue hits the given size.
-#### Usage: `/autoping set [role] [size]`
+#### Usage: `/autoping set [role] [size] (delete_after)`
 #### Arguments:
 `role`: *(Required)* Role to ping.\
-`size`: *(Required)* Ping when the queue hits this size.
+`size`: *(Required)* Ping when the queue hits this size.\
+`delete_after`: *(Optional)* Delete the ping after this many seconds.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 <hr style="border:3px solid gray">
@@ -531,6 +534,16 @@ Substitute yourself for the given player.
 #### Arguments:
 `toggle`: *(Required)* If players are muted.\
 &emsp;&emsp;&emsp; Options: `Enabled, Disabled`
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/captains bannedrole`
+#### Description
+ Sets a role which is banned from being captain.
+#### Usage: `/captains bannedrole (role)`
+#### Arguments:
+`role`: *(Optional)* The banned role.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -810,10 +823,11 @@ Substitute yourself for the given player.
 ### `/gamemode reshuffle`
 #### Description
  Sets whether players can reshuffle gamemodes in random gamemode selection.
-#### Usage: `/gamemode reshuffle [toggle]`
+#### Usage: `/gamemode reshuffle [toggle] (reshuffle_limit)`
 #### Arguments:
 `toggle`: *(Required)* Whether reshuffling is enabled or disabled.\
-&emsp;&emsp;&emsp; Options: `Enabled, Disabled`
+&emsp;&emsp;&emsp; Options: `Enabled, Disabled`\
+`reshuffle_limit`: *(Optional)* How many times players can reshuffle gamemodes.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -890,7 +904,7 @@ Substitute yourself for the given player.
 #### Usage: `/language set [language]`
 #### Arguments:
 `language`: *(Required)* Server language.\
-&emsp;&emsp;&emsp; Options: `English, Spanish, French, Portuguese, Japanese, Russian, German, Italian, Ukrainian, Polish, Hebrew, Arabic, Bengali, Hindi, Turkish, Vietnamese, Uwu, Owo`
+&emsp;&emsp;&emsp; Options: `English, Spanish, French, Portuguese, Japanese, Russian, German, Italian, Ukrainian, Polish, Hebrew, Arabic, Bengali, Hindi, Turkish, Vietnamese, Chinese Traditional, Uwu, Owo`
 >If there is an issue with a normal language translation, please fix here: https://crowdin.com/project/neatqueue
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -966,7 +980,7 @@ Substitute yourself for the given player.
 
 ### `/leaderboardconfig sharedstats set`
 #### Description
- Sets the name to use for stats storaged. Queues with the same name share stats.
+ Sets the name to use for stats storage. Queues with the same name share stats.
 #### Usage: `/leaderboardconfig sharedstats set [name]`
 #### Arguments:
 `name`: *(Required)* Shared stats configuration name.
@@ -1050,7 +1064,7 @@ Substitute yourself for the given player.
 
 ### `/lobbychannel set`
 #### Description
- Specify the channel to move players to/from before/after a game.
+ Specify the voice channel to move players to/from before/after a game.
 #### Usage: `/lobbychannel set [channel]`
 #### Arguments:
 `channel`: *(Required)* Channel to drag/drop players from/to.
@@ -1060,7 +1074,7 @@ Substitute yourself for the given player.
 
 ### `/lobbychannel timer`
 #### Description
- Specify how long players have to join the voice channel before the match is cancelled.
+ Specify how long players have to ready up before the match is cancelled.
 #### Usage: `/lobbychannel timer [timer]`
 #### Arguments:
 `timer`: *(Required)* (Default: 300) Timeout length in seconds.
@@ -1095,7 +1109,7 @@ Substitute yourself for the given player.
 #### Usage: `/lobbydetails location [location]`
 #### Arguments:
 `location`: *(Required)* Where to show lobby details.\
-&emsp;&emsp;&emsp; Options: `DMs, Teams Message`
+&emsp;&emsp;&emsp; Options: `Direct Message, Teams Message, Both`
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -1210,10 +1224,11 @@ Substitute yourself for the given player.
 ### `/mmr change set`
 #### Description
  (Default: 50) Sets the MMR change per game.
-#### Usage: `/mmr change set [amount] (loser_mmr) (static)`
+#### Usage: `/mmr change set [amount] (loser_mmr) (tie_mmr) (static)`
 #### Arguments:
 `amount`: *(Required)* The average MMR change for wins and losses.\
 `loser_mmr`: *(Optional)* Override the MMR change for losses.\
+`tie_mmr`: *(Optional)* Override the MMR change for ties.\
 `static`: *(Optional)* If the MMR change should ALWAYS be this value.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -1293,7 +1308,7 @@ Substitute yourself for the given player.
  Sets the MMR multiplier for the given role for wins.
 #### Usage: `/mmr multipliers set [role] [multiplier]`
 #### Arguments:
-`role`: *(Required)* -.\
+`role`: *(Required)* \
 `multiplier`: *(Required)* Multiplier value. (Ex: 1.2 for a 20% boost).
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -1360,7 +1375,7 @@ Substitute yourself for the given player.
  Adds the given player to the queue.
 #### Usage: `/player add [user] (role) (team)`
 #### Arguments:
-`user`: *(Required)* -.\
+`user`: *(Required)* \
 `role`: *(Optional)* Enter the role for the player.\
 `team`: *(Optional)* Enter the team for the player if desired.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
@@ -1377,15 +1392,24 @@ Substitute yourself for the given player.
 `hours`: *(Optional)* Hours to ban for.\
 `minutes`: *(Optional)* Minutes to ban for.\
 `seconds`: *(Optional)* Seconds to ban for.\
-`reason`: *(Optional)* -.
+`reason`: *(Optional)* 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
 
-### `/player banlist`
+### `/player banlist clear`
+#### Description
+ Clears the ban list.
+#### Usage: `/player banlist clear`
+
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/player banlist show`
 #### Description
  View the player ban list.
-#### Usage: `/player banlist`
+#### Usage: `/player banlist show`
 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -1397,6 +1421,39 @@ Substitute yourself for the given player.
 #### Usage: `/player remove [user]`
 #### Arguments:
 `user`: *(Required)* The player.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/player role ban`
+#### Description
+ Ban a user from selecting a specific role.
+#### Usage: `/player role ban [user] [role]`
+#### Arguments:
+`user`: *(Required)* The user to ban from the role.\
+`role`: *(Required)* The role to ban the user from.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/player role set`
+#### Description
+ Set a specific user's preferred role.
+#### Usage: `/player role set [user] [role]`
+#### Arguments:
+`user`: *(Required)* The user to modify.\
+`role`: *(Required)* The role to set as preferred.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/player role unban`
+#### Description
+ Unban a user from a specific role.
+#### Usage: `/player role unban [user] [role]`
+#### Arguments:
+`user`: *(Required)* The user to unban from the role.\
+`role`: *(Required)* The role to unban the user from.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -1527,10 +1584,11 @@ Substitute yourself for the given player.
 ### `/map reshuffle`
 #### Description
  Sets whether players can reshuffle maps in random map selection.
-#### Usage: `/map reshuffle [toggle]`
+#### Usage: `/map reshuffle [toggle] (reshuffle_limit)`
 #### Arguments:
 `toggle`: *(Required)* Whether reshuffling is enabled or disabled.\
-&emsp;&emsp;&emsp; Options: `Enabled, Disabled`
+&emsp;&emsp;&emsp; Options: `Enabled, Disabled`\
+`reshuffle_limit`: *(Optional)* How many times players can reshuffle maps.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -1570,12 +1628,23 @@ Substitute yourself for the given player.
 
 ---
 
+### `/matchstart removefromqueues`
+#### Description
+ (Default: Enabled) Remove players from other queues when a match starts.
+#### Usage: `/matchstart removefromqueues [toggle]`
+#### Arguments:
+`toggle`: *(Required)* If players are removed from queues on start.\
+&emsp;&emsp;&emsp; Options: `Enabled, Disabled`
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
 ### `/matchstart shuffleonstart`
 #### Description
  (Default: Disabled) Shuffle the player pool on start.
 #### Usage: `/matchstart shuffleonstart [mode]`
 #### Arguments:
-`mode`: *(Required)* -.\
+`mode`: *(Required)* \
 &emsp;&emsp;&emsp; Options: `Disabled, Lottery, Priority`
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -1600,9 +1669,10 @@ Substitute yourself for the given player.
 ### `/matchmaking leniency`
 #### Description
  Every 15 seconds, how much the range will increase for a better chance at a match.
-#### Usage: `/matchmaking leniency [value]`
+#### Usage: `/matchmaking leniency [value] (maximum)`
 #### Arguments:
-`value`: *(Required)* How much to increase the range by.
+`value`: *(Required)* How much to increase the range by.\
+`maximum`: *(Optional)* 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -2044,12 +2114,32 @@ Substitute yourself for the given player.
 <hr style="border:3px solid gray">
 
 ## Party Queue
+### `/partyqueue maxrange`
+#### Description
+ Set the max range of MMRs in a party that can enter the queue.
+#### Usage: `/partyqueue maxrange (max_range)`
+#### Arguments:
+`max_range`: *(Optional)* The max range of MMRs, or omit to remove.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
 ### `/partyqueue maxsize`
 #### Description
  Set the max party size that can enter the queue.
 #### Usage: `/partyqueue maxsize (max_size)`
 #### Arguments:
 `max_size`: *(Optional)* The max party size, or omit to remove.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/partyqueue minsize`
+#### Description
+ Set the min party size that can enter the queue.
+#### Usage: `/partyqueue minsize (min_size)`
+#### Arguments:
+`min_size`: *(Optional)* The min party size, or omit to remove.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -2132,7 +2222,7 @@ Substitute yourself for the given player.
  Sets the points multiplier for the given role.
 #### Usage: `/points multipliers set [role] [multiplier]`
 #### Arguments:
-`role`: *(Required)* -.\
+`role`: *(Required)* \
 `multiplier`: *(Required)* Multiplier value. (Ex: 1.2 for a 20% boost).
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -2231,7 +2321,7 @@ Substitute yourself for the given player.
 `allow_other`: *(Required)* If players can pick "Other" and manually type their response.\
 `options`: *(Required)* Comma separated list of options.\
 `key`: *(Optional)* Key which is used to store the results for a player, or omit to use the title.\
-`show_in_teams_message`: *(Optional)* -.
+`show_in_teams_message`: *(Optional)* 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -2323,6 +2413,32 @@ Substitute yourself for the given player.
 #### Usage: `/autoroles inqueue (role)`
 #### Arguments:
 `role`: *(Optional)* Enter the role, or omit to remove.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/autoroles leaderboardposition remove`
+#### Description
+ Removes a leaderboard position role.
+#### Usage: `/autoroles leaderboardposition remove [role] [stat]`
+#### Arguments:
+`role`: *(Required)* Enter the role.\
+`stat`: *(Required)* Stat which autoroles leaderboard position applies to.\
+&emsp;&emsp;&emsp; Options: `MMR, Peak MMR, Points, MVPs, Games, Wins, Losses, Winrate, Streak, Peak Streak`
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/autoroles leaderboardposition set`
+#### Description
+ Adds a condition to give players a role based on leaderboard position.
+#### Usage: `/autoroles leaderboardposition set [role] [stat] [lower_value] (upper_value)`
+#### Arguments:
+`role`: *(Required)* Enter the role.\
+`stat`: *(Required)* Type of leaderboard stat to use.\
+&emsp;&emsp;&emsp; Options: `MMR, Peak MMR, Points, MVPs, Games, Wins, Losses, Winrate, Streak, Peak Streak`\
+`lower_value`: *(Required)* (Inclusive) Leaderboard position range 1.\
+`upper_value`: *(Optional)* (Inclusive) Leaderboard position range 2, or omit for no range.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -2468,27 +2584,6 @@ Substitute yourself for the given player.
 `lower_value`: *(Required)* The lowest number of streaks required to gain the role.\
 `upper_value`: *(Required)* The upper number of streaks to lose the role.\
 `only_one_allowed`: *(Optional)* (Default: True) If this role is assigned, no other streaks autoroles will be allowed.
-#### Usage Permissions: `Staff Role or Manage Channels Permission`
-
----
-
-### `/autoroles topplayers remove`
-#### Description
- Removes a top player role.
-#### Usage: `/autoroles topplayers remove [role]`
-#### Arguments:
-`role`: *(Required)* Enter the role.
-#### Usage Permissions: `Staff Role or Manage Channels Permission`
-
----
-
-### `/autoroles topplayers set`
-#### Description
- Conditionally add/remove a role based on leaderboard position.
-#### Usage: `/autoroles topplayers set [role] [number]`
-#### Arguments:
-`role`: *(Required)* Enter the role for the top players.\
-`number`: *(Required)* Enter the number of players who can have this role.
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -2765,6 +2860,28 @@ Substitute yourself for the given player.
 
 ---
 
+### `/rolelimit remove`
+#### Description
+ Remove the limit for a role.
+#### Usage: `/rolelimit remove [role]`
+#### Arguments:
+`role`: *(Required)* The role to remove the limit for.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/rolelimit set`
+#### Description
+ Set the maximum number of players with this Discord role allowed in the queue.
+#### Usage: `/rolelimit set [role] [limit] (roles)`
+#### Arguments:
+`role`: *(Required)* The primary role to limit.\
+`limit`: *(Required)* The maximum number of players allowed.\
+`roles`: *(Optional)* Optional comma-separated list of additional role IDs or mentions to include in the same limit.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
 ### `/rolerequirement add`
 #### Description
  Add a required role to enter this queue. Players can join if they have any of the roles.
@@ -2833,7 +2950,7 @@ Substitute yourself for the given player.
  (BETA) Toggle if the scheduled command should repeat each time daily.
 #### Usage: `/schedule repeat [scheduled_command] (repeat)`
 #### Arguments:
-`scheduled_command`: *(Required)* -.\
+`scheduled_command`: *(Required)* \
 `repeat`: *(Optional)* If times should repeat after execution.\
 &emsp;&emsp;&emsp; Options: `Enabled, Disabled`
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
@@ -2997,7 +3114,7 @@ Substitute yourself for the given player.
 #### Usage: `/ratinginname format [format] [location]`
 #### Arguments:
 `format`: *(Required)* How the rating should be formatted. A '$' indicates the player's rating.\
-`location`: *(Required)* -.\
+`location`: *(Required)* \
 &emsp;&emsp;&emsp; Options: `Prefix, Suffix`
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
@@ -3178,6 +3295,27 @@ Substitute yourself for the given player.
 <hr style="border:3px solid gray">
 
 ## Stats Config
+### `/statsconfig graph games`
+#### Description
+ Sets the maximum number of games to show in /stats.
+#### Usage: `/statsconfig graph games (limit)`
+#### Arguments:
+`limit`: *(Optional)* (Default: 30) Max number of games to show.
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
+### `/statsconfig graph xaxis`
+#### Description
+ Sets the x-axis labels type in /stats.
+#### Usage: `/statsconfig graph xaxis [data]`
+#### Arguments:
+`data`: *(Required)* (Default: Dates) Which data to show on the x-axis in the stats graph.\
+&emsp;&emsp;&emsp; Options: `Dates, Games`
+#### Usage Permissions: `Staff Role or Manage Channels Permission`
+
+---
+
 ### `/statsconfig hidestats`
 #### Description
  Sets whether stats are forced to be hidden (only shown to the user).
@@ -3367,7 +3505,7 @@ Substitute yourself for the given player.
  (Default: 60) Sets the timeout for voting menus.
 #### Usage: `/timer votes [seconds]`
 #### Arguments:
-`seconds`: *(Required)* -.
+`seconds`: *(Required)* 
 #### Usage Permissions: `Staff Role or Manage Channels Permission`
 
 ---
@@ -3581,10 +3719,14 @@ Substitute yourself for the given player.
 
 ## Webhooks
 >Webhooks receive information about a match as it is being setup.
+> Each webhook will contain an "action" key in the payload.
 > Currently supported actions are:
+> - JOIN_QUEUE
+> - LEAVE_QUEUE
 > - MATCH_STARTED
 > - TEAMS_CREATED
 > - MATCH_COMPLETED
+> - SUBSTITUTION
 > 
 > Additionally, if you have `/requireregister mode: Custom API`, you will receive a webhook with action
 > - REGISTER_PLAYER
@@ -3592,9 +3734,6 @@ Substitute yourself for the given player.
 > containing various information about the user, as well as the account they are attempting to register.
 > You must either reply with a json object containing at least a "rating" key (ex: {"rating": 1000}), to specify the
 > rating that the player should be registered with, or any non 200 status response to display to the user.
-> 
-> Examples:
-> https://webhook.site/#!/695c599b-fc6d-4a23-aaee-ce170e355fb3/7051d907-b47b-4b05-acc8-96464fa6c565/1
 ### `/webhooks add`
 #### Description
  Add a new webhook to receive queue information.

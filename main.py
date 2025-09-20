@@ -1,5 +1,6 @@
 import datetime
 import os
+from collections import deque
 
 from disnake import (
     Intents,
@@ -18,14 +19,16 @@ from disnake.ui import Button
 from dotenv import load_dotenv
 from llama_index.core.prompts import PromptType
 
-load_dotenv()
-
 from llama_index.core import (
     VectorStoreIndex,
     SimpleDirectoryReader,
     StorageContext,
     load_index_from_storage, PromptTemplate,
 )
+from llama_index.core import Settings
+from llama_index.llms.openai import OpenAI
+
+load_dotenv()
 
 intents = Intents.default()
 intents.message_content = True
@@ -48,6 +51,8 @@ else:
 
 print("Loaded index")
 
+Settings.llm = OpenAI(model="gpt-5-mini")
+
 prompt_template_str = (
     "Context information from multiple sources is below.\n"
     "---------------------\n"
@@ -61,7 +66,7 @@ prompt_template_str = (
     "Always prioritize answers from the README.md file, which is the main source of information. "
     "Any command suggested must be found in the README.md file source. "
     "If the answer is not somewhat found in the given sources, then say you do not have that information, and suggest "
-    "asking the same question in the <#868549627652214794> channel. "
+    "asking the same question in the <#1173046426255773707> channel. "
     "Only answer questions if you know the answer.\n"
     "Query: {query_str}\n"
     "Answer: "
@@ -76,11 +81,73 @@ query_engine = index.as_query_engine(
 
 
 
+# ---------------- Conversation History ----------------
+MAX_HISTORY_TURNS = int(os.getenv("CHAT_HISTORY_TURNS", "8"))
+SEED_HISTORY_MESSAGES = int(os.getenv("CHAT_HISTORY_SEED", "12"))
+
+# channel_id -> deque[(role, content)], where role in {"User", "Assistant"}
+channel_histories = {}
+
+
+def _get_history(channel_id: int):
+    if channel_id not in channel_histories:
+        channel_histories[channel_id] = deque(maxlen=MAX_HISTORY_TURNS * 2)
+    return channel_histories[channel_id]
+
+
+async def ensure_channel_history_initialized(channel):
+    """Seed per-channel history from the most recent messages if empty."""
+    history = _get_history(channel.id)
+    if len(history) > 0:
+        return
+
+    try:
+        # oldest_first=True so we append in chronological order
+        async for m in channel.history(limit=SEED_HISTORY_MESSAGES, oldest_first=True):
+            if not isinstance(m, Message) or not m.content:
+                continue
+            role = "Assistant" if m.author.bot else "User"
+            _append_message(channel.id, role, m.content)
+    except Exception:
+        # Fail open if we cannot read history (permissions, etc.)
+        pass
+
+
+def _append_message(channel_id: int, role: str, content: str):
+    if not content:
+        return
+    history = _get_history(channel_id)
+    # de-duplicate adjacent identical entries (common when seeding includes current msg)
+    if len(history) > 0 and history[-1][0] == role and history[-1][1] == content:
+        return
+    history.append((role, content))
+
+
+def _format_history(channel_id: int) -> str:
+    history = _get_history(channel_id)
+    if not history:
+        return ""
+    lines = []
+    for role, content in history:
+        lines.append(f"{role}: {content}")
+    return "\n".join(lines)
+
+
+def compose_query_with_history(channel_id: int, user_message: str) -> str:
+    history_text = _format_history(channel_id)
+    if history_text:
+        return (
+            "Conversation so far:\n" + history_text + "\n\n" +
+            f"Current question: {user_message}"
+        )
+    return user_message
+
+
 @client.event
 async def on_ready():
     print("Bot has logged in")
     # await find_training_data()
-    activity = Activity(type=ActivityType.watching, name=f"over the support channel")
+    activity = Activity(type=ActivityType.watching, name="over the support channel")
     await client.change_presence(status=Status.online, activity=activity)
     pass
 
@@ -95,13 +162,20 @@ async def on_message(message: Message):
         return
 
     print(f"Responding to {message.content} from {message.author}")
-    response = await query_engine.aquery(message.content)
+
+    async with message.channel.typing():
+        # Seed history if needed and compose query with conversation
+        await ensure_channel_history_initialized(message.channel)
+        _append_message(message.channel.id, "User", message.content)
+        composed = compose_query_with_history(message.channel.id, message.content)
+        response = await query_engine.aquery(composed)
     await message.reply(
         response.response,
         components=[
             Button(emoji="🗑️", custom_id="deletemessage", style=ButtonStyle.red)
         ],
     )
+    _append_message(message.channel.id, "Assistant", response.response)
     print(
         f"Responded to '{message.content}' from {message.author} with '{response.response}'"
     )
@@ -112,13 +186,17 @@ async def on_message(message: Message):
 )
 async def answer_with_ai(inter: MessageCommandInteraction):
     await inter.send("Answering...", ephemeral=True)
-    response = await query_engine.aquery(inter.target.content)
+    await ensure_channel_history_initialized(inter.channel)
+    _append_message(inter.channel.id, "User", inter.target.content)
+    composed = compose_query_with_history(inter.channel.id, inter.target.content)
+    response = await query_engine.aquery(composed)
     await inter.target.reply(
         response.response,
         components=[
             Button(emoji="🗑️", custom_id="deletemessage", style=ButtonStyle.red)
         ],
     )
+    _append_message(inter.channel.id, "Assistant", response.response)
 
 
 @client.event
@@ -153,7 +231,7 @@ async def find_training_data():
 
     date = date.replace(tzinfo=datetime.timezone.utc)
 
-    async for message in support_channel.history(limit=None, oldest_first=False):
+    async for message in support_channel.history(limit=None, oldest_first=False, after=date):
         if message.created_at < date:
             break
 
